@@ -31,7 +31,7 @@ public class Application {
         System.out.println(cityDao.readById(2));
         cityDao.deleteById(4);
         cityDao.findAll().forEach(System.out::println);
-        cityDao.updateCityById(new City(3, "WWWWWWWWWWWWWWW"));
+        cityDao.updateCityById(3);
 
     }
 }

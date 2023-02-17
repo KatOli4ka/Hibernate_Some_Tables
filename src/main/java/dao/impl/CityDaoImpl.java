@@ -39,10 +39,10 @@ public class CityDaoImpl implements CityDao {
     }
 
     @Override
-    public void updateCityById(City city) {
+    public void updateCityById(long cityId) {
         try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
-            session.update(city);
+            session.update(cityId);
             transaction.commit();
         }
     }
