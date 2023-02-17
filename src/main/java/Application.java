@@ -25,11 +25,11 @@ public class Application {
 
         CityDao cityDao = new CityDaoImpl();
         cityDao.findAll().forEach(System.out::println);
-        City c1 = new City(7, "Riga");
+        City c1 = new City(8, "New York");
         cityDao.add(c1);
         cityDao.findAll().forEach(System.out::println);
         System.out.println(cityDao.readById(2));
-        cityDao.deleteById(4);
+        cityDao.deleteById(1);
         cityDao.findAll().forEach(System.out::println);
         cityDao.updateCityById(3);
 

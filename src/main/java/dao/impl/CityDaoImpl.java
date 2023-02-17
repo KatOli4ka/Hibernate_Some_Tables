@@ -49,9 +49,10 @@ public class CityDaoImpl implements CityDao {
 
     @Override
     public void deleteById(long cityId) {
+        City city=new City(cityId);
         try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
-            session.delete(cityId);
+            session.delete(city);
             transaction.commit();
         }
     }
