@@ -2,6 +2,7 @@ package entity;
 import javax.persistence.*;
 
 
+import java.util.List;
 import java.util.Objects;
 @Entity
 @Table(name = "city")
@@ -9,21 +10,22 @@ import java.util.Objects;
 public class City {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column (name = "city_id",nullable = false)
+    @Column (name = "city_id")
     private long cityId;
-    @Column (name = "city_name",nullable = false)
+    @Column (name = "city_name")
     private String cityName;
+    @OneToMany(mappedBy = "city", cascade = CascadeType.ALL)
+    private List<Employee> employees;
 
-    public City(long cityId) {
+    public City(String cityName) {
+        this.cityName = cityName;
     }
 
     public City(long cityId, String cityName) {
         this.cityId = cityId;
         this.cityName = cityName;
     }
-
     public City() {
-
     }
 
     public long getCityId() {
@@ -42,21 +44,16 @@ public class City {
         this.cityName = cityName;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        City city = (City) o;
-        return cityId == city.cityId && Objects.equals(cityName, city.cityName);
+    public List<Employee> getEmployees() {
+        return employees;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(cityId, cityName);
+    public void setEmployees(List<Employee> employees) {
+        this.employees = employees;
     }
 
     @Override
     public String toString() {
-        return cityId +", cityName = " + cityName;
+        return cityName+" c id: "+cityId;
     }
 }

@@ -2,58 +2,72 @@ package dao.impl;
 
 import dao.CityDao;
 import entity.City;
-import entity.Employee;
+
 import hebirnate.HibernateSessionFactoryUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-
-import java.util.ArrayList;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+import java.io.Serializable;
 import java.util.List;
+import java.util.Optional;
 
 public class CityDaoImpl implements CityDao {
 
     @Override
     public City add(City city) {
-        try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
-            Transaction transaction = session.beginTransaction();
-            session.saveOrUpdate(city);
-            transaction.commit();
-            return city;
-        }
+//        Optional<City> optionalCity=readById(city.getCityId());
+//        if (optionalCity.isPresent()) {
+            try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
+
+                Transaction transaction = session.beginTransaction();
+                session.save(city);
+                transaction.commit();
+                return city;
+
+//            Transaction transaction = session.beginTransaction();
+//            Serializable createdId = session.save(optionalCity);
+//            City createdCity = session.get(City.class, createdId);
+//            transaction.commit();
+//            return Optional.ofNullable(createdCity);
+            }
+//        } return Optional.empty();
     }
 
     @Override
-    public City readById(long cityId) {
-        return HibernateSessionFactoryUtil.getSessionFactory().openSession().get(City.class, cityId);
+    public Optional<City> readById(long id) {
+        try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
+            return Optional.ofNullable(session.get(City.class, id));
+        }
     }
 
     @Override
     public List<City> findAll() {
-        List<City> cityList;
         try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
-            Transaction transaction = session.beginTransaction();
-            cityList = new ArrayList<>(session.createQuery("From City", City.class).list());
-            transaction.commit();
-        }
-        return cityList;
-    }
-
-    @Override
-    public void updateCityById(long cityId) {
-        try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
-            Transaction transaction = session.beginTransaction();
-            session.update(cityId);
-            transaction.commit();
+            return session.createQuery("From City", City.class).list();
         }
     }
 
     @Override
-    public void deleteById(long cityId) {
-        City city=new City(cityId);
-        try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
-            Transaction transaction = session.beginTransaction();
-            session.delete(city);
-            transaction.commit();
-        }
+    public City updateCity(City city) {
+        EntityManager entityManager = HibernateSessionFactoryUtil.getSessionFactory().createEntityManager();
+        EntityTransaction entityTransaction = entityManager.getTransaction();
+        entityTransaction.begin();
+        City updated=entityManager.merge(city);
+        entityTransaction.commit();
+        return updated;
+    }
+
+    @Override
+    public Optional<City> delete(City city) {
+    Optional<City> optionalCity=readById(city.getCityId());
+        if (optionalCity.isPresent()) {
+            try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
+                Transaction transaction = session.beginTransaction();
+                session.delete(optionalCity.get());
+                transaction.commit();
+                return optionalCity;
+            }
+        }return Optional.empty();
     }
 }
