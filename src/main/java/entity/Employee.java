@@ -1,4 +1,5 @@
 package entity;
+
 import javax.persistence.*;
 
 
@@ -6,45 +7,51 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.util.Objects;
+
+
 @Entity
 @Table(name = "employee")
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(name = "first_name", nullable = false)
+    @Column(name = "first_name", nullable = false, length = 50)
     private String firstName;
-    @Column(name = "last_name", nullable = false)
+    @Column(name = "last_name", nullable = false, length = 50)
     private String lastName;
-    @Column(name = "gender", nullable = false)
+    @Column(name = "gender", nullable = false, length = 6)
     private String gender;
-    @Column(name = "age", nullable = false)
+    @Column(name = "age")
     private int age;
-    @ManyToOne(cascade = CascadeType.ALL)
-    private City cityId;
-    public Employee(int id, String ann, String oh, String f, int age, int i) {
+    @ManyToOne
+    @JoinColumn(name = "city_id")
+    private City city;
+
+    public Employee() {
     }
 
-    public Employee(String firstName, String lastName, String gender, int age, City cityId) {
+    public Employee(String firstName, String lastName, String gender, int age) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;
         this.age = age;
-        this.cityId = cityId;
     }
 
-    public Employee(long id, String firstName, String lastName, String gender, int age, City cityId) {
+    public Employee(String firstName, String lastName, String gender, int age, City city) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender;
+        this.age = age;
+        this.city = city;
+    }
+
+    public Employee(long id, String firstName, String lastName, String gender, int age, City city) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;
         this.age = age;
-        this.cityId = cityId;
-    }
-
-    public Employee() {
-
+        this.city = city;
     }
 
     public long getId() {
@@ -87,32 +94,17 @@ public class Employee {
         this.age = age;
     }
 
-    public City getCityId() {
-        return cityId;
+    public City getCity() {
+        return city;
     }
 
-    public void setCityId(City cityId) {
-        this.cityId = cityId;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Employee employee = (Employee) o;
-        return id == employee.id && age == employee.age && Objects.equals(firstName, employee.firstName)
-                && Objects.equals(lastName, employee.lastName) && Objects.equals(gender, employee.gender)
-                && Objects.equals(cityId, employee.cityId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, firstName, lastName, gender, age, cityId);
+    public void setCity(City city) {
+        this.city = city;
     }
 
     @Override
     public String toString() {
-        return "id = " + id +", firstName = " + firstName +", lastName = " + lastName +", gender = " + gender  +
-                ", age = " + age +", cityId = " + cityId ;
+        return "id = " + id + ", Имя = " + firstName + ", Фамилия = " + lastName + ", Пол = " + gender +
+                ", Возраст = " + age + ", город = " + city;
     }
 }

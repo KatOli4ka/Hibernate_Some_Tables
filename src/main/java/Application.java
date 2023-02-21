@@ -6,32 +6,71 @@ import entity.City;
 import entity.Employee;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Application {
-    public static void main(String[] args) throws SQLException {
-
+    public static void main(String[] args) {
         EmployeeDao employeeDao = new EmployeeDaoImpl();
-//        employeeDao.findAll().forEach(System.out::println);
-//        System.out.println();
-//        Employee e1= new Employee(1,"Ann","Oh","f",73,4);
-//        employeeDao.add(e1);
-//        employeeDao.findAll().forEach(System.out::println);
-//        System.out.println();
-//        System.out.println(employeeDao.readById(2));
-//        System.out.println();
-//        employeeDao.deleteById(e1);
-//        employeeDao.findAll().forEach(System.out::println);
-//        System.out.println();
-
         CityDao cityDao = new CityDaoImpl();
-        cityDao.findAll().forEach(System.out::println);
-        City c1 = new City(7, "Riga");
-        cityDao.add(c1);
-        cityDao.findAll().forEach(System.out::println);
-        System.out.println(cityDao.readById(2));
-        cityDao.deleteById(4);
-        cityDao.findAll().forEach(System.out::println);
-        cityDao.updateCityById(3);
+//        int n = 3;
+
+//        City city= new City("Moscow");
+//        List<Employee> employees = new ArrayList<>(n);
+//        for (int i = 0; i < n; i++) {
+//            employees.add(new Employee
+//                    ("qwerty" + (i + 1), "QWERTY" + (i + 1), "x", 45 - i, city));
+//        }
+//        city.setEmployees(employees);
+
+//        cityDao.add(city);
+//        cityDao.updateCity(new City("Hong Kong"));
+//
+//        System.out.println(cityDao.readById(8));
+//
+//        employeeDao.findAll().forEach(System.out::println);
+//        System.out.println(cityDao.delete(city));
+//        employeeDao.findAll().forEach(System.out::println);
+
+        City spb=new City(1,"СПб");
+        City paris=new City(2,"Париж");
+        City moscow=new City(3,"Москва");
+        cityDao.add(spb);
+        cityDao.add(paris);
+        cityDao.add(moscow);
+
+        Employee vanya=employeeDao.add(new Employee("Ваня","Иванов","m",45,spb));
+        System.out.println("Сотрудник "+vanya+" добавлен");
+        Employee masha=employeeDao.add(new Employee("Маша","Иванченко","f",34,paris));
+        System.out.println("Сотрудник "+masha+" добавлен");
+        Employee galya=employeeDao.add(new Employee("Галя","Петрова","f",51));
+        System.out.println("Сотрудник "+galya+" добавлен");
+
+        System.out.println("Все сотрудники добавлены");
+        employeeDao.findAll().forEach(System.out::println);
+
+        employeeDao.readById(masha.getId())
+                .ifPresent(emp -> System.out.println("Найден сотрудник: "+emp));
+
+        vanya.setAge(76);
+        vanya.setCity(paris);
+        vanya.setLastName("Крыжовников");
+        vanya=employeeDao.updateEmployee(masha);
+        System.out.println("Сотрудник "+vanya+" обновлен");
+        paris=cityDao.updateCity(moscow);
+        System.out.println(cityDao.readById(34));
+
+        System.out.println(cityDao.delete(paris));
+
+        System.out.println(cityDao.readById(8));
+        employeeDao.findAll().forEach(System.out::println);
+
+
+        employeeDao.delete(masha)
+                .ifPresent(emp -> System.out.println("Удален сотрудник: "+emp));
+
+        System.out.println("Все сотрудники");
+        employeeDao.findAll().forEach(System.out::println);
 
     }
 }
