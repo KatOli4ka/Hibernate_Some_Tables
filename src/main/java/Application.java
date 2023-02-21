@@ -13,52 +13,65 @@ public class Application {
     public static void main(String[] args) {
         EmployeeDao employeeDao = new EmployeeDaoImpl();
         CityDao cityDao = new CityDaoImpl();
-        int n = 3;
-        City city = new City("Riga");
-        List<Employee> employees = new ArrayList<>(n);
-        for (int i = 0; i < n; i++) {
-            employees.add(new Employee
-                    ("qwerty" + (i + 1), "QWERTY" + (i + 1), "x", 45 - i, city));
-        }
-        city.setEmployees(employees);
+//        int n = 3;
 
-        cityDao.add(city);
+//        City city= new City("Moscow");
+//        List<Employee> employees = new ArrayList<>(n);
+//        for (int i = 0; i < n; i++) {
+//            employees.add(new Employee
+//                    ("qwerty" + (i + 1), "QWERTY" + (i + 1), "x", 45 - i, city));
+//        }
+//        city.setEmployees(employees);
 
-        employeeDao.findAll().forEach(System.out::println);
-        cityDao.delete(city);
-        employeeDao.findAll().forEach(System.out::println);
-
-
-//        City spb=new City(1,"СПб");
-//        City riga=new City(2,"Рига");
-//        City paris=new City(3,"Париж");
+//        cityDao.add(city);
+//        cityDao.updateCity(new City("Hong Kong"));
 //
-//        Employee vanya=employeeDao.add(new Employee("Ваня","Иванов","m",45,spb));
-//        System.out.println("Сотрудник "+vanya+" добавлен");
-//        Employee jora=employeeDao.add(new Employee("Жора","Крылов","m",25,spb));
-//        System.out.println("Сотрудник "+jora+" добавлен");
-//        Employee masha=employeeDao.add(new Employee("Маша","Иванченко","f",34,paris));
-//        System.out.println("Сотрудник "+masha+" добавлен");
-//        Employee galya=employeeDao.add(new Employee("Галя","Петрова","f",51));
-//        System.out.println("Сотрудник "+galya+" добавлен");
+//        System.out.println(cityDao.readById(8));
 //
-//        System.out.println("Все сотрудники добавлены");
 //        employeeDao.findAll().forEach(System.out::println);
-//
-//        employeeDao.readById(masha.getId())
-//                .ifPresent(emp -> System.out.println("Найден сотрудник: "+emp));
-//
-//        jora.setAge(76);
-//        jora.setCity(riga);
-//        jora.setLastName("Крыжовников");
-//        jora=employeeDao.updateEmployee(jora);
-//        System.out.println("Сотрудник "+jora+" обновлен");
-//
-//        employeeDao.delete(jora)
-//                .ifPresent(emp -> System.out.println("Удален сотрудник: "+emp));
-//
-//        System.out.println("Все сотрудники");
+//        System.out.println(cityDao.delete(city));
 //        employeeDao.findAll().forEach(System.out::println);
+
+        City spb=new City(1,"СПб");
+        City paris=new City(2,"Париж");
+        City moscow=new City(3,"Москва");
+        cityDao.add(spb);
+        cityDao.add(paris);
+        cityDao.add(moscow);
+
+        Employee vanya=employeeDao.add(new Employee("Ваня","Иванов","m",45,spb));
+        System.out.println("Сотрудник "+vanya+" добавлен");
+        Employee masha=employeeDao.add(new Employee("Маша","Иванченко","f",34,paris));
+        System.out.println("Сотрудник "+masha+" добавлен");
+        Employee galya=employeeDao.add(new Employee("Галя","Петрова","f",51));
+        System.out.println("Сотрудник "+galya+" добавлен");
+
+        System.out.println("Все сотрудники добавлены");
+        employeeDao.findAll().forEach(System.out::println);
+
+        employeeDao.readById(masha.getId())
+                .ifPresent(emp -> System.out.println("Найден сотрудник: "+emp));
+
+        vanya.setAge(76);
+        vanya.setCity(paris);
+        vanya.setLastName("Крыжовников");
+        vanya=employeeDao.updateEmployee(masha);
+        System.out.println("Сотрудник "+vanya+" обновлен");
+        paris=cityDao.updateCity(moscow);
+        System.out.println(cityDao.readById(34));
+
+        System.out.println(cityDao.delete(paris));
+
+        System.out.println(cityDao.readById(8));
+        employeeDao.findAll().forEach(System.out::println);
+
+
+        employeeDao.delete(masha)
+                .ifPresent(emp -> System.out.println("Удален сотрудник: "+emp));
+
+        System.out.println("Все сотрудники");
+        employeeDao.findAll().forEach(System.out::println);
+
     }
 }
 

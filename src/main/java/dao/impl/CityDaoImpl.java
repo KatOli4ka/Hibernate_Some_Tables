@@ -66,8 +66,12 @@ public class CityDaoImpl implements CityDao {
                 Transaction transaction = session.beginTransaction();
                 session.delete(optionalCity.get());
                 transaction.commit();
+                System.out.println("удаление прошло успешно");
                 return optionalCity;
+
             }
-        }return Optional.empty();
+        }
+        System.out.println("удаление не прошло");
+        return Optional.empty();
     }
 }
