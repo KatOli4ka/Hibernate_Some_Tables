@@ -1,14 +1,15 @@
 package dao;
 
 import entity.City;
-import entity.Employee;
+
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CityDao {
-    City add(City city);
-    City readById(long cityId);
+  City add(City city);
+    Optional<City> readById(long id);
     List<City> findAll();
-    void updateCityById(long cityId);
-    void deleteById(long cityId);
+    City updateCity(City city);
+    Optional<City> delete(City city);
 }

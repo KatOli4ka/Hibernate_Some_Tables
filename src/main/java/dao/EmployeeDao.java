@@ -3,11 +3,16 @@ package dao;
 import entity.Employee;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface EmployeeDao {
     Employee add(Employee employee);
-    Employee readById(long id);
+
+    Optional<Employee> readById(long id);
+
     List<Employee> findAll();
-    void updateEmployeeById(Employee employee);
-    void deleteById(Employee employee);
+
+    Employee updateEmployee(Employee employee);
+
+    Optional<Employee> delete(Employee employee);
 }
